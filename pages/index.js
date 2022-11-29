@@ -10,8 +10,11 @@ export default function Home() {
 	const lenis = useRef(null)
 
 	const update = (time, deltaTime, frame) => {
-		// console.log(time)
 		lenis.current.raf(time * 1000)
+	}
+
+	const resize = (e) => {
+		ScrollTrigger.refresh()
 	}
 
 	useEffect(() => {
@@ -43,10 +46,7 @@ export default function Home() {
 
 		ScrollTrigger.defaults({ scroller: document.body })
 
-		window.addEventListener('resize', e => {
-			// console.log(lenis.current)
-			ScrollTrigger.refresh()
-		})
+		window.addEventListener('resize', resize)
 
 		// animations
 
@@ -65,7 +65,10 @@ export default function Home() {
 			scrub: true
 		})
 
+		// clean
+
 		return () => {
+			window.removeEventListener('resize', resize)
 			gsap.ticker.remove(update)
 			lenis.current.destroy()
 			tl.kill()
